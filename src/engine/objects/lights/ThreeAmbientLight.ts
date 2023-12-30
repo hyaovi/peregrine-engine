@@ -2,7 +2,7 @@ import { AmbientLight } from "three";
 import { AbstractLight } from "./AbsctractLight";
 
 export class ThreeAmbienLight extends AbstractLight {
-  constructor(params: ILightObjectparams) {
+  constructor(params: ILightObjectParams) {
     super(params);
     this.type = 'ambient';
     this.createLight();

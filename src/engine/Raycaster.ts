@@ -1,8 +1,8 @@
 import { Vector2, Raycaster as ThreeRaycaster, Object3D } from 'three';
 import { Engine } from './Engine';
-import { BaseEntity } from './entities/BaseEntity';
+import { BaseObject } from './objects/BaseObject';
 
-export class Raycaster extends BaseEntity implements IBaseEntityClass {
+export class Raycaster extends BaseObject implements IBaseObjectClass {
   private raycaster: THREE.Raycaster;
   private pointer: Vector2;
 
@@ -19,7 +19,8 @@ export class Raycaster extends BaseEntity implements IBaseEntityClass {
     document.addEventListener('click', this.updateRayCaster.bind(this));
   }
   updateRayCaster(event: MouseEvent) {
-    const { camera, renderer } = this.engine.getEngineContext();
+    // const { camera, renderer } = this.engine.getEngineContext();
+    const { camera, renderer } = Engine.getEngineContext();
     const mouse = this.pointer;
     const rect = renderer.domElement.getBoundingClientRect();
     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;

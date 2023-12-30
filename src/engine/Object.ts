@@ -10,15 +10,15 @@ import {
   SpotLightHelper,
   PointLightHelper,
 } from 'three';
-import { BaseEntity } from './entities/BaseEntity';
+import { BaseObject } from './objects/BaseObject';
 
 type ObjectType =
   | Object3D<Object3DEventMap>
   | Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>;
 
-type HelperType = DirectionalLightHelper | SpotLightHelper | PointLightHelper;
+// type HelperType = DirectionalLightHelper | SpotLightHelper | PointLightHelper;
 
-export class ObjectEntity extends BaseEntity {
+export class ObjectEntity extends BaseObject {
   public object: ObjectType;
   public helper?: HelperType;
   public params: {} = {};
@@ -29,13 +29,13 @@ export class ObjectEntity extends BaseEntity {
     this.object = new Object3D();
     this.isRaycastable = true;
   }
-  setPosition(position: ICoordinate3d | Vector3) {
+  setPosition(position: ICoordinate3D | Vector3) {
     this.object.position.set(position.x, position.y, position.z);
   }
-  setScale(scale: ICoordinate3d | Vector3) {
+  setScale(scale: ICoordinate3D | Vector3) {
     this.object.scale.set(scale.x, scale.y, scale.z);
   }
-  setRotation(rotation: ICoordinate3d | Vector3) {
+  setRotation(rotation: ICoordinate3D | Vector3) {
     this.object.rotation.set(rotation.x, rotation.y, rotation.z);
   }
 
@@ -53,6 +53,7 @@ export class ObjectEntity extends BaseEntity {
   }
   update(delta: number, engineContext: IEngineContext): void {
     super.update(delta, engineContext);
+    this.helper && this.helper.update();
   }
   destroy(engineContext: IEngineContext): void {
     super.destroy(engineContext);
@@ -71,5 +72,4 @@ export class ObjectEntity extends BaseEntity {
     return this.object.children[0] as THREE.Mesh;
   }
 }
-export { BaseEntity };
-
+export { BaseObject };

@@ -1,14 +1,14 @@
 import { Clock, WebGLRenderer } from 'three';
-import { BaseEntity } from './entities/BaseEntity';
+import { BaseObject } from './objects/BaseObject';
 
-export class EngineRenderer extends BaseEntity implements IBaseEntityClass {
+export class EngineRenderer extends BaseObject implements IBaseObjectClass {
   public instance!: WebGLRenderer;
   private clock!: Clock;
   private delta!: number;
-  private params: IrendererParams;
+  private params: IRendererParams;
   private renderRequested: boolean = false;
 
-  constructor(rendererParams: IrendererParams) {
+  constructor(rendererParams: IRendererParams) {
     super();
     this.params = rendererParams;
     this.clock = new Clock();
@@ -27,14 +27,11 @@ export class EngineRenderer extends BaseEntity implements IBaseEntityClass {
     if (!this.renderRequested) return;
     const { scene, camera, renderer } = engineContext;
     renderer.render(scene, camera);
-    console.log('@@@@ renderer')
     this.renderRequested = false;
   }
   // Method to request a render
   requestRender(): void {
-   setTimeout(() => {
      this.renderRequested = true;
-   }, 1);
   }
   getDelta() {
     this.delta = this.clock.getDelta();

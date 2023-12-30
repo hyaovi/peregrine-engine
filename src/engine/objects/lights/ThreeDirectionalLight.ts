@@ -2,7 +2,7 @@ import { DirectionalLight, DirectionalLightHelper, Vector3 } from 'three';
 import { AbstractLight } from './AbsctractLight';
 
 export class ThreeDirectionalLight extends AbstractLight {
-  constructor(params: ILightObjectparams) {
+  constructor(params: ILightObjectParams) {
     super(params);
     this.type = 'directional';
     const [light, helper] = this.createLight();

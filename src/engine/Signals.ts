@@ -1,9 +1,9 @@
 import { Engine } from './Engine';
-import { BaseEntity } from './entities/BaseEntity';
+import { BaseObject } from './objects/BaseObject';
 
 export const DOM_EVENT_NAMES = ['resize', 'click', 'pointerdown', 'mousemove'];
 
-export class Signals extends BaseEntity implements IBaseEntityClass {
+export class Signals extends BaseObject implements IBaseObjectClass {
   private engine: Engine;
   private listeners: { [key: string]: Function[] } = {};
   static DOM_EVENT_NAMES: string[] = DOM_EVENT_NAMES;

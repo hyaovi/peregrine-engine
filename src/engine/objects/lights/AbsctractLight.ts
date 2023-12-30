@@ -1,6 +1,6 @@
 import { ObjectEntity } from '../../Object';
 
-const defaultLightParams: ILightObjectparams = {
+const defaultLightParams: ILightObjectParams = {
   type: 'ambient',
   name: 'light',
   light: {
@@ -17,8 +17,8 @@ const defaultLightParams: ILightObjectparams = {
 
 export class AbstractLight extends ObjectEntity {
   public type: LightType;
-  public params: ILightObjectparams;
-  constructor(params: ILightObjectparams = defaultLightParams) {
+  public params: ILightObjectParams;
+  constructor(params: ILightObjectParams = defaultLightParams) {
     super();
     this.type = 'ambient';
     this.params = { ...defaultLightParams, ...params };

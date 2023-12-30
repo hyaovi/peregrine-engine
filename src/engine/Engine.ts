@@ -2,14 +2,14 @@
 
 import { EngineRenderer } from './EngineRenderer';
 import { ThreeControls } from './ThreeControls';
-import { Grid } from './entities/Grid';
+import { Grid } from './objects/Grid';
 import { Signals } from './Signals';
 import { EngineCamera } from './Camera';
 import { EngineScene } from './Scene';
 import { Raycaster } from './Raycaster';
 import { Color } from 'three';
 
-export const defaultEngineParams: IengineParamsType = {
+export const defaultEngineParams: IEngineParamsType = {
   scene: {
     backgroundColor: new Color('#ccc'),
   },
@@ -24,18 +24,19 @@ export const defaultEngineParams: IengineParamsType = {
 };
 
 export class Engine {
+  private static instance: Engine;
   public readonly scene: EngineScene;
   public readonly camera: EngineCamera;
   public readonly renderer: EngineRenderer;
   public entities: IObjectEntityClass[];
-  private params: IengineParamsType;
+  private params: IEngineParamsType;
   public threeControls!: ThreeControls;
   public eventManager: Signals;
   public raycaster!: Raycaster;
   public isloading: boolean = false;
   public isReady: boolean = false;
 
-  constructor(params: IengineParamsType = defaultEngineParams) {
+  constructor(params: IEngineParamsType = defaultEngineParams) {
     this.params = params;
     this.isReady = false;
     this.isloading = true;
@@ -50,6 +51,15 @@ export class Engine {
       this.raycaster = new Raycaster(this);
     }
     this.entities = [];
+  }
+  public static getInstance() {
+    if (!Engine.instance) {
+      Engine.instance = new Engine();
+    }
+    return Engine.instance;
+  }
+  public static getEngineContext(): IEngineContext {
+    return Engine.getInstance().engineContext;
   }
 
   init() {
@@ -66,10 +76,10 @@ export class Engine {
   start() {
     this.addGrid();
     this.startObjects();
-    this.loop()
+    this.loop();
   }
   public getEngineContext(): IEngineContext {
-    return this.engineContext;
+    return Engine.getEngineContext();
   }
   private addGrid(): void {
     if (this.params.isEditorMode) {
@@ -79,7 +89,6 @@ export class Engine {
 
   addEntity(entity: IObjectEntityClass): void {
     if (!this.isReady) throw new Error('Engine is not ready');
-    console.log('@@@ add entity')
     this.entities.push(entity);
     this.scene.instance.add(entity.object);
     entity.helper && this.scene.instance.add(entity.helper);

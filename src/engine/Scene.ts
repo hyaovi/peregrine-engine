@@ -1,10 +1,10 @@
 import { Scene, Color } from 'three';
-import { BaseEntity } from './entities/BaseEntity';
+import { BaseObject } from './objects/BaseObject';
 
-export class EngineScene extends BaseEntity implements IBaseEntityClass {
+export class EngineScene extends BaseObject implements IBaseObjectClass {
   public instance: Scene;
-  private sceneParams: IsceneParams;
-  constructor(public getEngineContext: () => IEngineContext, sceneParams: IsceneParams) {
+  private sceneParams: ISceneParams;
+  constructor(public getEngineContext: () => IEngineContext, sceneParams: ISceneParams) {
     super();
     this.sceneParams = sceneParams;
     const scene = new Scene();

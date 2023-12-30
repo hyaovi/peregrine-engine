@@ -1,44 +1,40 @@
 import * as THREE from 'three';
-import { BaseEntity } from './entities/BaseEntity';
-// THREE.RepeatWrapping | THREE.ClampToEdgeWrapping | THREE.MirroredRepeatWrapping;
-// THREE.NearestFilter   THREE.LinearFilter;
-interface ITextureOption {
-  wrapS: typeof THREE.RepeatWrapping;
-  wrapT: typeof THREE.RepeatWrapping;
-  magFilter: typeof THREE.LinearFilter;
-  minFilter: typeof THREE.LinearFilter;
-  anisotropy: number;
-}
 
-const defaultTextureParams: ITextureOption = {
-  wrapS: THREE.RepeatWrapping,
-  wrapT: THREE.RepeatWrapping,
-  minFilter: THREE.LinearFilter,
-  magFilter: THREE.LinearFilter,
-  anisotropy: 1,
+const defaultTextureParams: ITextureParams = {
+  asset: {
+    type: 'image',
+    url: '',
+    othersParams: {},
+  },
+    wrapS: THREE.RepeatWrapping,
+    wrapT: THREE.RepeatWrapping,
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    anisotropy: 1,
 };
 export class ThreeTexture {
   private texture: THREE.Texture = new THREE.Texture();
   private texturePromise: Promise<THREE.Texture>;
+  public params: ITextureParams;
 
   constructor(
-    imagePath: string,
-    params: ITextureOption = defaultTextureParams,
+    params: ITextureParams = defaultTextureParams,
     public engineContext?: IEngineContext,
   ) {
     let parameters = { ...defaultTextureParams, ...params };
-
-    this.texturePromise = this.createTexture(imagePath, parameters);
+    this.params = parameters;
+    this.texturePromise = this.createTexture(parameters);
   }
   async ready() {
     return this.texturePromise;
   }
 
-  private createTexture(imagePath: string, parameters?: ITextureOption): Promise<THREE.Texture> {
+  private createTexture(params: ITextureParams = this.params): Promise<THREE.Texture> {
+    const { asset,  ...parameters } = params;
     return new Promise<THREE.Texture>((resolve, reject) => {
       const loader = new THREE.TextureLoader();
       this.texture = loader.load(
-        imagePath,
+        asset.url,
         (loadedTexture) => {
           resolve(loadedTexture);
         },
@@ -52,8 +48,8 @@ export class ThreeTexture {
           parameters.wrapS !== undefined ? parameters.wrapS : THREE.ClampToEdgeWrapping;
         this.texture.wrapT =
           parameters.wrapT !== undefined ? parameters.wrapT : THREE.ClampToEdgeWrapping;
-        this.texture.magFilter =
-          parameters.magFilter !== undefined ? parameters.magFilter : THREE.LinearFilter;
+        // this.texture.magFilter =
+        //   parameters.magFilter !== undefined ? parameters.magFilter : THREE.LinearFilter;
         this.texture.minFilter =
           parameters.minFilter !== undefined
             ? parameters.minFilter
@@ -65,5 +61,8 @@ export class ThreeTexture {
 
   public getTexture(): THREE.Texture {
     return this.texture;
+  }
+  public setTexture(texture: THREE.Texture): void {
+    this.texture = texture;
   }
 }

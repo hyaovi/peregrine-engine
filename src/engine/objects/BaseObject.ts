@@ -1,6 +1,8 @@
-export class BaseEntity implements IBaseEntityClass {
-  public engineContext!: IEngineContext;
-  constructor() {}
+
+export class BaseObject implements IBaseObjectClass {
+  public engineContext?: IEngineContext;
+  constructor() {
+  }
   init({}: IEngineContext): void {}
   start({}: IEngineContext) {}
   stop({}: IEngineContext): void {}

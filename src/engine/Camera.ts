@@ -1,7 +1,7 @@
 import { PerspectiveCamera } from 'three';
-import { BaseEntity } from './entities/BaseEntity';
+import { BaseObject } from './objects/BaseObject';
 
-export class EngineCamera extends BaseEntity {
+export class EngineCamera extends BaseObject {
   public instance: PerspectiveCamera;
   constructor(public getEngineContext: () => IEngineContext) {
     super();
